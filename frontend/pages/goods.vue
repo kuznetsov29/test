@@ -24,6 +24,11 @@
     import Cart from '@/components/cart/Cart';
 
     export default {
+        head: {
+            script: [
+                {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
+            ],
+        },
         computed: {
             goodsByCategory() {
                 var result = {};
@@ -57,7 +62,7 @@
             CategoryRow,
             Cart
         },
-        created: function () {
+        mounted: function () {
             this.$store.dispatch('getGoods');
 
             this.timer = setInterval(() => {

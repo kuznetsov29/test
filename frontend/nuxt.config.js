@@ -15,10 +15,7 @@ module.exports = {
         ],
         link: [
             {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-        ],
-        script: [
-            { src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js' }
-        ],
+        ]
     },
 
     /*
