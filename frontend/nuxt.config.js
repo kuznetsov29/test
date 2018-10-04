@@ -14,8 +14,11 @@ module.exports = {
             {hid: 'description', name: 'description', content: pkg.description}
         ],
         link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
-        ]
+            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+        ],
+        script: [
+            { src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js' }
+        ],
     },
 
     /*

@@ -24,14 +24,6 @@
     import Cart from '@/components/cart/Cart';
 
     export default {
-        head: {
-            script: [
-                {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
-            ],
-        },
-        async fetch({store, params}) {
-            await store.dispatch('getGoods');
-        },
         computed: {
             goodsByCategory() {
                 var result = {};
@@ -66,6 +58,8 @@
             Cart
         },
         created: function () {
+            this.$store.dispatch('getGoods');
+
             this.timer = setInterval(() => {
                 this.$store.dispatch('getGoods');
                 this.$store.commit('changeDollarRate');
