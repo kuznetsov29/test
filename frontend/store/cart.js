@@ -11,11 +11,17 @@ export default {
         }
     },
     mutations: {
+        updateCount(state, data) {
+            var itemIndex = _.findIndex(state.items, function(item) { return item.good.T === data.good.T; });
+
+            state.items[itemIndex].count = data.count;
+        },
         addToCart(state, good) {
             var itemIndex = _.findIndex(state.items, function(item) { return item.good.T === good.T; });
 
             if (itemIndex !== -1) {
                 if (state.items[itemIndex].count >= good.P) {
+                    alert('Нельзя добавить больше ' + good.P);
                     return false;
                 }
 
@@ -37,8 +43,8 @@ export default {
         }
     },
     actions: {
-        addToCart(context, good) {
-            context.commit('addToCart', good);
+        addToCart(state, good) {
+            state.commit('addToCart', good);
         }
     }
 };

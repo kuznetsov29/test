@@ -13,7 +13,7 @@
                     Итого
                 </div>
                 <div class="flex-2 text-grey-lighter text-center bg-grey-dark px-12 py-2 m-2">
-                    {{totalPrice}}
+                    <money :money-in-cent="totalPrice"></money>
                 </div>
             </div>
         </div>
@@ -22,20 +22,22 @@
 
 <script>
     import ItemCart from "./ItemCart";
+    import Money from "../Money";
 
     export default {
-        components: {ItemCart},
+        components: {Money, ItemCart},
         computed: {
             cartItems() {
                 return this.$store.state.cart.items
             },
             totalPrice() {
                 var sum = 0;
-                var self = this;
-                this.$store.state.cart.items.forEach(function (itemCart) {
-                    sum += itemCart.good.C * self.$store.state.dollarRate * itemCart.count;
-                })
-                return Math.round(sum * 100)/100;
+
+                this.$store.state.cart.items.forEach((itemCart) => {
+                    sum += itemCart.good.priceInCent * itemCart.count;
+                });
+
+                return sum;
             }
         },
         methods: {

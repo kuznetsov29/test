@@ -7,22 +7,33 @@
                 </div>
             </div>
         </section>
+
         <Cart></Cart>
+
         <div class="flex justify-center">
             <div class="bg-grey-light h-1 w-16 rounded"></div>
         </div>
 
-        <CategoryRow v-for="category in goodsByCategory" v-bind:key="category.name" :category="category.name" :goods="category.goods"></CategoryRow>
+        <CategoryRow v-for="category in goodsByCategory" v-bind:key="category.name" :category="category.name"
+                     :goods="category.goods"></CategoryRow>
     </div>
 </template>
 
 <script>
     import CategoryRow from '@/components/goods/CategoryRow';
     import Cart from '@/components/cart/Cart';
+    import {HTTP} from "../plugins/http-common";
 
     export default {
-        async asyncData({ store }) {
-            await store.dispatch('getNames');
+        head: {
+            script: [
+                {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
+            ],
+        },
+        async asyncData({store}) {
+
+        },
+        async fetch({store, params}) {
             await store.dispatch('getGoods');
         },
         computed: {
@@ -32,13 +43,21 @@
 
                 state.goods.forEach(function (good) {
                     if (typeof result[good.G] === 'undefined') {
+                        var categoryName = '';
+
+                        if (typeof store !== 'undefined') {
+                            categoryName = store[good.G].G;
+                        }
+
                         result[good.G] = {
-                            name: state.names[good.G].G,
+                            name: categoryName,
                             goods: []
                         };
                     }
 
-                    good.name = state.names[good.G].B[good.T].N;
+                    if (typeof store !== 'undefined') {
+                        good.name = store[good.G].B[good.T].N;
+                    }
 
                     result[good.G].goods.push(good);
                 });
@@ -46,21 +65,15 @@
                 return result;
             }
         },
-        methods: {
-            getGoods: function () {
-                this.$store.dispatch('getGoods');
-            }
-        },
         components: {
             CategoryRow,
             Cart
         },
         created: function () {
-            var self = this;
-            this.timer = setInterval(function () {
-                self.getGoods();
-                self.$store.state.dollarRate = Math.random() * (80 - 20) + 20;
-            }, 15000);
+            this.timer = setInterval(() => {
+                this.$store.dispatch('getGoods');
+                this.$store.commit('changeDollarRate');
+            }, 5000);
         },
         beforeDestroy() {
             clearInterval(this.timer)

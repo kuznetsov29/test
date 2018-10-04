@@ -3,8 +3,8 @@
         <div class="flex-1 bg-white px-8 py-2 m-2 mt-0">
             {{good.name}}({{good.P}})
         </div>
-        <div v-bind:class="{ 'bg-red': priceDiff < 0, 'bg-green': priceDiff > 0 }" class="flex-2 text-grey-darker text-center bg-grey-light px-4 py-2 m-2 mt-0">
-            {{price}}
+        <div class="flex-2 text-grey-darker text-center bg-grey-light px-4 py-2 m-2 mt-0">
+            <Money :money-in-cent="good.priceInCent"></Money>
         </div>
         <div v-on:click="addToCart(good)" class="flex-2 text-grey-darker text-center bg-grey-light px-4 py-2 m-2 mt-0">
             add
@@ -13,21 +13,18 @@
 </template>
 
 <script>
+    import Money from "../Money";
     export default {
+        components: {Money},
         props: {
             good: {
                 type: Object
             }
         },
         computed: {
-            priceDiff() {
-                var oldPrice = this.oldPrice;
-                this.oldPrice = this.$store.state.dollarRate;
-
-                return oldPrice - this.$store.state.dollarRate;
-            },
             price() {
-                return Math.round(this.good.C * this.$store.state.dollarRate * 100)/100;
+                console.log(this.$store.getters.dollarRateInCent);
+                return Math.round(this.good.priceInCent * this.$store.getters.dollarRateInCent / 100)/ 100;
             }
         },
         methods: {
@@ -36,7 +33,7 @@
             }
         },
         created: function () {
-            this.oldPrice = this.$store.state.dollarRate;
+            this.oldRate = this.$store.state.dollarRate;
         }
     }
 </script>
