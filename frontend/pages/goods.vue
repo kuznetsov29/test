@@ -24,11 +24,11 @@
     import Cart from '@/components/cart/Cart';
 
     export default {
-        head: {
-            script: [
-                {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
-            ],
-        },
+        // head: {
+        //     script: [
+        //         {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
+        //     ],
+        // },
         computed: {
             goodsByCategory() {
                 var result = {};
@@ -63,7 +63,15 @@
             Cart
         },
         mounted: function () {
-            this.$store.dispatch('getGoods');
+            var script = document.createElement('script');
+
+            script.onload = () => {
+                this.$store.dispatch('getGoods');
+            };
+
+            script.src = (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js';
+
+            document.head.appendChild(script);
 
             this.timer = setInterval(() => {
                 this.$store.dispatch('getGoods');
