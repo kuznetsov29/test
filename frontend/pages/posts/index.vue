@@ -19,7 +19,7 @@
 
 <script>
     import {HTTP} from "../../plugins/http-common";
-    import Post from "../../components/post";
+    import Post from "./post";
 
     export default {
         components: {Post},
@@ -29,9 +29,6 @@
             return {
                 posts: response.data
             }
-        },
-        async fetch({store, params}) {
-
-        },
+        }
     }
 </script>

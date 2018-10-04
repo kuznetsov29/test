@@ -8,21 +8,20 @@
     export default {
         props: {
             moneyInCent: Number,
-            fromCurrency: {
-                type: String,
-                default: "EN",
-            },
             toCurrency: {
                 type: String,
-                default: "RUB",
+                default: "",
             },
         },
         computed: {
             money() {
-                return this.convert(this.moneyInCent)/ 100;
+                return this.convert() / 100;
+            },
+            currency() {
+                return this.toCurrency || this.$store.getters.currency; // Для установки валюты локально to-currency="RUB"
             },
             rateDiff() {
-                if (this.moneyInCent === 0) {
+                if (this.moneyInCent === 0 || this.currency === 'EN') { // Не считем подсвечиваем нулевые цены и цены не зависящие от курса
                     return 0;
                 }
 
@@ -33,25 +32,21 @@
             }
         },
         methods: {
-            convert: function (value) {  // TODO реализовать настоящий конвертер from/to
-                switch (this.fromCurrency) {
+            convert: function () { // Импровизированный корвертер валют
+                switch (this.currency) {
+                    case "RUB":
+                        return Math.round(this.moneyInCent * this.$store.getters.dollarRateInCent / 100);
                     case "EN":
-                        if (this.toCurrency === 'EN') {
-                            return this.moneyInCent;
-                        } else if (this.toCurrency === 'RUB') {
-                            return Math.round(this.moneyInCent * this.$store.getters.dollarRateInCent / 100);
-                        }
+                        return this.moneyInCent;
                     default:
                         return 0;
 
                 }
             },
             label: function () {
-                switch (this.toCurrency) {
+                switch (this.currency) {
                     case "EN":
                         return '$';
-                    case "GE":
-                        return '€';
                     case "RUB":
                         return '₽';
                     default:

@@ -10,17 +10,31 @@ const createStore = () => {
         },
         state: {
             goods: [],
-            dollarRate: 65
+            dollarRate: 65,
+            currency: 'RUB',
+            currencyList: [
+                { text: 'Рубли', value: 'RUB' },
+                { text: 'Доллары', value: 'EN' },
+            ],
         },
         getters: {
             dollarRateInCent(state) {
                 return parseInt(state.dollarRate * 100);
+            },
+            currency(state) {
+                return state.currency;
+            },
+            currencyList(state) {
+                return state.currencyList;
             },
             goods(state) {
                 return state.goods;
             }
         },
         mutations: {
+            setCurrency(state, currency) {
+                state.currency = currency;
+            },
             setGoods(state, goods) {
                 state.goods = [];
 

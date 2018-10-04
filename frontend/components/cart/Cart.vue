@@ -31,7 +31,7 @@
                 return this.$store.state.cart.items
             },
             totalPrice() {
-                var sum = 0;
+                let sum = 0;
 
                 this.$store.state.cart.items.forEach((itemCart) => {
                     sum += itemCart.good.priceInCent * itemCart.count;

@@ -11,7 +11,19 @@
         <Cart></Cart>
 
         <div class="flex justify-center">
-            <div class="bg-grey-light h-1 w-16 rounded"></div>
+            <div class="relative">
+                <select @input="setCurrency"
+                        class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker
+                    py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey"
+                        id="grid-state">
+                    <option v-for="currency in currencyList" v-bind:value="currency.value">{{ currency.text }}</option>
+                </select>
+                <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                    </svg>
+                </div>
+            </div>
         </div>
 
         <CategoryRow v-for="(category, index) in goodsByCategory" v-bind:key="index" :category="category.name"
@@ -24,19 +36,16 @@
     import Cart from '@/components/cart/Cart';
 
     export default {
-        // head: {
-        //     script: [
-        //         {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
-        //     ],
-        // },
         computed: {
+            currencyList() {
+                return this.$store.getters.currencyList;
+            },
             goodsByCategory() {
-                var result = {};
-                var state = this.$store.state;
+                const result = {};
 
-                state.goods.forEach(function (good) {
-                    if (!result.hasOwnProperty(good.G)){
-                        var categoryName = '';
+                this.$store.getters.goods.forEach(function (good) {
+                    if (!result.hasOwnProperty(good.G)) {
+                        let categoryName = '';
 
                         if (typeof store !== 'undefined') {
                             categoryName = store[good.G].G;
@@ -62,8 +71,13 @@
             CategoryRow,
             Cart
         },
+        methods: {
+            setCurrency(e) {
+                this.$store.commit('setCurrency', e.target.value);
+            },
+        },
         mounted: function () {
-            var script = document.createElement('script');
+            const script = document.createElement('script');
 
             script.onload = () => {
                 this.$store.dispatch('getGoods');
