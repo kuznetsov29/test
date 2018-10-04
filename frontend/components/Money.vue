@@ -14,6 +14,10 @@
                 return Math.round(this.moneyInCent * this.$store.getters.dollarRateInCent / 100)/ 100
             },
             rateDiff() {
+                if (this.moneyInCent === 0) {
+                    return 0;
+                }
+
                 let rateDiff = this.oldRate - this.$store.state.dollarRate;
                 this.oldRate = this.$store.state.dollarRate;
 

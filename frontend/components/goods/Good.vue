@@ -21,19 +21,10 @@
                 type: Object
             }
         },
-        computed: {
-            price() {
-                console.log(this.$store.getters.dollarRateInCent);
-                return Math.round(this.good.priceInCent * this.$store.getters.dollarRateInCent / 100)/ 100;
-            }
-        },
         methods: {
             addToCart(good) {
                 this.$store.dispatch('cart/addToCart', good)
             }
-        },
-        created: function () {
-            this.oldRate = this.$store.state.dollarRate;
         }
     }
 </script>
