@@ -4,6 +4,7 @@
             {{good.name}}({{good.P}})
         </div>
         <div class="flex-2 text-grey-darker text-center bg-grey-light px-4 py-2 m-2 mt-0">
+            <!--<Money :money-in-cent="good.priceInCent" :to-currency="'EN'"></Money>-->
             <Money :money-in-cent="good.priceInCent"></Money>
         </div>
         <div v-on:click="addToCart(good)" class="flex-2 text-grey-darker text-center bg-grey-light px-4 py-2 m-2 mt-0">

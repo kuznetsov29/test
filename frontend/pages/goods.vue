@@ -73,7 +73,7 @@
             this.timer = setInterval(() => {
                 this.$store.dispatch('getGoods');
                 this.$store.commit('changeDollarRate');
-            }, 5000);
+            }, 15000);
         },
         beforeDestroy() {
             clearInterval(this.timer)
