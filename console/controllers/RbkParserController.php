@@ -56,22 +56,6 @@ class RbkParserController extends Controller
     }
 
     /**
-     * Parser for rbk.ru
-     *
-     * @throws \yii\httpclient\Exception
-     */
-    public function actionTest()
-    {
-        foreach (\api\models\Post::find()->all() as $post) {
-
-            echo mb_substr($post->content, 0, 200);
-            echo "\r\n";
-            echo "\r\n";
-            echo "\r\n";
-        }
-    }
-
-    /**
      * @param array $post
      *
      * @throws Exception
