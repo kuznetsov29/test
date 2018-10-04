@@ -46,9 +46,9 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
-                        'v1/good' => 'v1/good',
-                        'v1/name' => 'v1/name',
+                        'v1/post' => 'v1/post',
                     ],
+                    'except' => ['delete', 'update', 'create'],
                 ],
                 '<controller>/<action>' => '<controller>/<action>',
             ],

@@ -4,6 +4,7 @@ namespace console\components\parsers;
 
 use Symfony\Component\DomCrawler\Crawler;
 use yii\base\BaseObject;
+use yii\helpers\Html;
 use yii\httpclient\Client;
 use yii\httpclient\Response;
 
@@ -124,26 +125,36 @@ class RbkParser extends BaseObject
      */
     private function parsePost(Response $response): array
     {
+        $result = [];
+
         $html = $response->getContent();
         $crawler = new Crawler($html);
 
         $title = $crawler->filter('div.article__header__title');
         $articleText = $crawler->filter('div.article__text');
+        $image = $crawler->filter('div.article__main-image__link > img');
         $description = $articleText->filter('div.article__text__overview');
+        $articleP = $articleText->filter('div.article__text > p');
 
         if ($title->count()) {
-            var_dump(trim($title->first()->text()));
+            $result['title'] = trim($title->first()->text());
         }
 
         if ($description->count()) {
-            var_dump(trim($description->first()->text()));
+            $result['description'] = trim($description->first()->text());
         }
 
-        return [];
+        if ($image->count()) {
+            $result['image_link'] = trim($image->first()->attr('src'));
+        }
 
+        $result['content'] = '';
+        $result['count'] = $articleP->count();
 
-//        foreach ($crawler as $domElement) {
-//            $this->links[] = $domElement->getAttribute('href');
-//        }
+        $articleP->each(function (Crawler $tagP, $i) use (&$result) {
+            $result['content'] .= Html::tag('p', $tagP->text());
+        });
+
+        return $result;
     }
 }

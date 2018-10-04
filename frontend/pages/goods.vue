@@ -14,7 +14,7 @@
             <div class="bg-grey-light h-1 w-16 rounded"></div>
         </div>
 
-        <CategoryRow v-for="category in goodsByCategory" v-bind:key="category.name" :category="category.name"
+        <CategoryRow v-for="(category, index) in goodsByCategory" v-bind:key="index" :category="category.name"
                      :goods="category.goods"></CategoryRow>
     </div>
 </template>
@@ -22,16 +22,12 @@
 <script>
     import CategoryRow from '@/components/goods/CategoryRow';
     import Cart from '@/components/cart/Cart';
-    import {HTTP} from "../plugins/http-common";
 
     export default {
         head: {
             script: [
                 {src: (process.env.BASE_URL || 'http://api.test.ru/') + 'js/names.js'}
             ],
-        },
-        async asyncData({store}) {
-
         },
         async fetch({store, params}) {
             await store.dispatch('getGoods');
@@ -42,7 +38,7 @@
                 var state = this.$store.state;
 
                 state.goods.forEach(function (good) {
-                    if (typeof result[good.G] === 'undefined') {
+                    if (!result.hasOwnProperty(good.G)){
                         var categoryName = '';
 
                         if (typeof store !== 'undefined') {
