@@ -19,7 +19,7 @@
 
 <script>
     import {HTTP} from "../../plugins/http-common";
-    import Post from "./post";
+    import Post from "../../components/post";
 
     export default {
         components: {Post},
