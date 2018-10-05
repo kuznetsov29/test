@@ -12,7 +12,7 @@
 
         <div class="flex justify-center">
             <div class="relative">
-                <select @input="setCurrency"
+                <select v-bind:value="currency" @input="setCurrency"
                         class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker
                     py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey"
                         id="grid-state">
@@ -37,6 +37,9 @@
 
     export default {
         computed: {
+            currency() {
+                return this.$store.getters.currency;
+            },
             currencyList() {
                 return this.$store.getters.currencyList;
             },
