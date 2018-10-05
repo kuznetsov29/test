@@ -5,10 +5,10 @@ export default ({store}) => {
     createPersistedState({
         key: 'vuex',
         paths: [],
-        storage: {
-            getItem: key => Cookie.get(key),
-            setItem: (key, value) => Cookie.set(key, value, { expires: 3, secure: false }),
-            removeItem: key => Cookie.remove(key)
-        }
+        // storage: {
+        //     getItem: key => Cookie.get(key),
+        //     setItem: (key, value) => Cookie.set(key, value, { expires: 3, secure: false }),
+        //     removeItem: key => Cookie.remove(key)
+        // }
     })(store)
 }
