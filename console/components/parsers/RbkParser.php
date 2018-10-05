@@ -62,7 +62,6 @@ class RbkParser extends BaseObject
     }
 
     /**
-     * @return bool
      * @throws \yii\httpclient\Exception
      */
     public function run()

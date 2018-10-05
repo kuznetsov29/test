@@ -38,10 +38,7 @@ class RbkParserController extends Controller
                 try {
                     $this->savePost($post);
                 } catch (\Exception $e) {
-                    $this->stderr($e->getLine());
-                    $this->stderr(' ');
-                    $this->stderr($e->getMessage());
-                    $this->stdout("\r\n");
+                    $this->showErrors($e);
                 }
             };
         }
@@ -58,7 +55,7 @@ class RbkParserController extends Controller
     /**
      * @param array $post
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private function savePost(array $post)
     {
@@ -66,15 +63,12 @@ class RbkParserController extends Controller
             try {
                 $image_id = $this->saveFile($post['image_link']);
             } catch (\Exception $e) {
-                $this->stderr($e->getLine());
-                $this->stderr(' ');
-                $this->stderr($e->getMessage());
-                $this->stdout("\r\n");
+                $this->showErrors($e);
             }
         }
 
         if (!$post['title']) {
-            throw new Exception('Title is not defined');
+            throw new \Exception('Title is not defined');
         }
 
         $post = new Post([
@@ -85,15 +79,14 @@ class RbkParserController extends Controller
         ]);
 
         if (!$post->save()) {
-            throw new Exception(implode('; ', $post->firstErrors));
+            throw new \Exception(implode('; ', $post->firstErrors));
         };
     }
 
     /**
      * @param $url
      * @return int
-     * @throws Exception
-     * @throws \yii\base\Exception
+     * @throws \Exception
      */
     private function saveFile($url): int
     {
@@ -114,7 +107,7 @@ class RbkParserController extends Controller
         $fullPath = $basePath . $path . $baseName . '.' . $extension;
 
         if (file_put_contents($fullPath, file_get_contents($url)) === false) {
-            throw new Exception('Cannot get file from url');
+            throw new \Exception('Cannot get file from url');
         };
 
         $file = new File([
@@ -125,9 +118,19 @@ class RbkParserController extends Controller
         ]);
 
         if (!$file->save()) {
-            throw new Exception(implode('; ', $file->firstErrors));
+            throw new \Exception(implode('; ', $file->firstErrors));
         };
 
         return $file->id;
+    }
+
+    /**
+     * @param \Exception $e
+     */
+    private function showErrors(\Exception $e) {
+        $this->stderr($e->getLine());
+        $this->stderr(' ');
+        $this->stderr($e->getMessage());
+        $this->stdout("\r\n");
     }
 }
