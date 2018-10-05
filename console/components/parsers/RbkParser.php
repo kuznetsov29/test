@@ -86,7 +86,7 @@ class RbkParser extends BaseObject
         $crawler = new Crawler($html);
 
         $crawler = $crawler->filter('a.news-feed__item');
-        $crawler = $crawler->filterXPath("//a[not(contains(@href,'utm_source'))]");
+        $crawler = $crawler->filterXPath("//a[not(contains(@href,'utm_source'))]"); // Удаляем рекламу
 
         for ($i = 0; $i < 15 && $i < $crawler->count(); $i++) {
             $this->links[] = $crawler
